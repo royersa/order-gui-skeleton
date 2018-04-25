@@ -1,4 +1,4 @@
-package com.switchfully.vaadin.ordergui.interfaces.customers;
+package com.switchfully.vaadin.ordergui.interfaces.items;
 
 public class Item {
     public String id;
