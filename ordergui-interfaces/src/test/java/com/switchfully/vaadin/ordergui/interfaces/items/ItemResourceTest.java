@@ -1,4 +1,4 @@
-package com.switchfully.vaadin.ordergui.interfaces.customers;
+package com.switchfully.vaadin.ordergui.interfaces.items;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -8,10 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.AdditionalMatchers.eq;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
