@@ -14,7 +14,7 @@ import static com.switchfully.vaadin.ordergui.interfaces.items.Item.ItemBuilder;
 
 public class CreateItemForm extends FormLayout {
     private TextField name = new TextField("Name");
-    private TextField description = new TextField("Description");
+    private TextArea description = new TextArea("Description");
     private TextField price = new TextField("Price");
     private TextField amountOfStock = new TextField("Amount");
     private Button createButton = new Button("Create");
@@ -30,6 +30,7 @@ public class CreateItemForm extends FormLayout {
 
         description.setWidth("40em");
         description.setHeight("10em");
+        description.setMaxLength(750);
         description.setNullRepresentation("");
 
         price.setWidth("10em");

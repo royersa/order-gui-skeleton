@@ -3,7 +3,9 @@ package com.switchfully.vaadin.ordergui.webapp.items.views;
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Page;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 import java.util.ArrayList;
@@ -46,6 +48,15 @@ public class CreateItemView extends CustomComponent implements CreateItemForm.Cr
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
+    }
+
+    public void showNotificationForSuccessfullCreation(){
+        Notification notification = new Notification("Item Creation Success",
+                "The item has been successfully created in the database.", Notification.Type.HUMANIZED_MESSAGE, true);
+         notification.setDelayMsec(3000);
+
+         notification.show(Page.getCurrent());
 
     }
 
