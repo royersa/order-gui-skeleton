@@ -7,17 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AllItemsModel implements CreateItemModel.CreateItemModelListener {
+public class AllItemsModel implements CreateItemModel.CreateItemModelListener, UpdateItemModel.UpdateItemModelListener {
     private ItemResource itemResource;
     private CreateItemModel createItemModel;
+    private UpdateItemModel updateItemModel;
     private List<AllItemsModelListener> listeners = new ArrayList<>();
     private List<Item> items;
     private List<Item> resultList;
     private String searchFilter;
 
-    public AllItemsModel(ItemResource itemResource, CreateItemModel createItemModel) {
+    public AllItemsModel(ItemResource itemResource, CreateItemModel createItemModel, UpdateItemModel updateItemModel) {
         this.createItemModel = createItemModel;
         createItemModel.addListener(this);
+        this.updateItemModel = updateItemModel;
+        updateItemModel.addListener(this);
 
         this.itemResource = itemResource;
         this.items = itemResource.getItems();
@@ -27,6 +30,10 @@ public class AllItemsModel implements CreateItemModel.CreateItemModelListener {
 
     public void setSearchFilter(String searchFilter){
         this.searchFilter = searchFilter;
+    }
+
+    public void askForFilterReset(String searchFilter){
+        listeners.forEach(listener -> listener.resetFilterRequested(searchFilter));
     }
 
     public void setNewActiveItem(){
@@ -46,15 +53,30 @@ public class AllItemsModel implements CreateItemModel.CreateItemModelListener {
 
     @Override
     public void itemSaved(Item item) {
+        askForFilterReset("");
         updateResultList();
+
+    }
+
+    @Override
+    public void itemUpdated(Item item) {
+        askForFilterReset("");
+        updateResultList();
+
+    }
+
+    @Override
+    public void itemActivated(Item item) {
+
     }
 
     @Override
     public void newItemActivated(Item item) {
-
     }
+
 
     public interface AllItemsModelListener{
         void resultListChanged(List<Item> resultList);
+        void resetFilterRequested(String searchFilter);
     }
 }

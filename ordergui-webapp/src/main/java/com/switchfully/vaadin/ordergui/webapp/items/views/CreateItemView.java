@@ -1,6 +1,8 @@
 package com.switchfully.vaadin.ordergui.webapp.items.views;
 
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
+import com.switchfully.vaadin.ordergui.webapp.OrderGUI;
+import com.switchfully.vaadin.ordergui.webapp.items.views.forms.CreateItemForm;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;

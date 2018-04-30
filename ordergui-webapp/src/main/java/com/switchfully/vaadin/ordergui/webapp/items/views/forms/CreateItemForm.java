@@ -1,4 +1,4 @@
-package com.switchfully.vaadin.ordergui.webapp.items.views;
+package com.switchfully.vaadin.ordergui.webapp.items.views.forms;
 
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;

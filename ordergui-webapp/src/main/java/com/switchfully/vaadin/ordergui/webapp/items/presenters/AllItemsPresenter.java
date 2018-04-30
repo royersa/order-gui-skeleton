@@ -11,6 +11,7 @@ public class AllItemsPresenter implements AllItemsModel.AllItemsModelListener, A
     private AllItemsModel model;
     private AllItemsView view;
 
+
     public AllItemsPresenter(AllItemsModel model, AllItemsView view) {
         this.model = model;
         model.addListener(this);
@@ -18,6 +19,10 @@ public class AllItemsPresenter implements AllItemsModel.AllItemsModelListener, A
         view.addListener(this);
     }
 
+    @Override
+    public void resetFilterRequested(String searchFilter) {
+        this.view.resetFilter(searchFilter);
+    }
     @Override
     public void resultListChanged(List<Item> resultList) {
         this.view.setSearchResults(resultList);
@@ -47,8 +52,8 @@ public class AllItemsPresenter implements AllItemsModel.AllItemsModelListener, A
     }
 
     @Override
-    public void editClicked() {
-
+    public void editClicked(Item item) {
+        this.view.getUI().getNavigator().navigateTo(OrderGUI.VIEW_UPDATE_ITEM + "/" + item.getId());
     }
 
     public AllItemsModel getModel() {

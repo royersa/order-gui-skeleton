@@ -1,8 +1,9 @@
 package com.switchfully.vaadin.ordergui.webapp.items.views;
 
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
-import com.switchfully.vaadin.ordergui.webapp.OrderGUI;
+import com.switchfully.vaadin.ordergui.webapp.items.views.generators.EditButtonGenerator;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.GeneratedPropertyContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
@@ -72,10 +73,14 @@ public class AllItemsView extends CustomComponent implements View {
 
     private void populateGrid(List<Item> items) {
         BeanItemContainer<Item> container = new BeanItemContainer<>(Item.class, items);
+        GeneratedPropertyContainer editContainer = new GeneratedPropertyContainer(container);
+        editContainer.addGeneratedProperty("", new EditButtonGenerator() {
+        });
 
-        grid.setColumns("name", "description", "price", "amountOfStock");
+        grid.setColumns("name", "description", "price", "amountOfStock", "");
+        grid.getColumn("").setRenderer(new ButtonRenderer(e -> listeners.forEach(listener -> listener.editClicked((Item)e.getItemId()))));
 
-        grid.setContainerDataSource(container);
+        grid.setContainerDataSource(editContainer);
 
     }
 
@@ -86,6 +91,12 @@ public class AllItemsView extends CustomComponent implements View {
     public void setSearchResults(List<Item> resultList) {
         this.items = resultList;
         populateGrid(resultList);
+    }
+
+    public void resetFilter(String filterText){
+        filter.setValue(filterText);
+        this.listeners.forEach(listener -> listener.searchFilterChanged(filterText));
+
     }
 
     @Override
@@ -102,6 +113,6 @@ public class AllItemsView extends CustomComponent implements View {
 
         void newItemClicked();
 
-        void editClicked();
+        void editClicked(Item item);
     }
 }
