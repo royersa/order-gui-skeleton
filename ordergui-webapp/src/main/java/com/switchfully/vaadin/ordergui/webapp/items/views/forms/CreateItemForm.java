@@ -3,9 +3,12 @@ package com.switchfully.vaadin.ordergui.webapp.items.views.forms;
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.validator.FloatRangeValidator;
+import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.hibernate.validator.internal.constraintvalidators.bv.number.bound.decimal.DecimalMaxValidatorForFloat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +30,29 @@ public class CreateItemForm extends FormLayout {
     public CreateItemForm() {
         name.setWidth("40em");
         name.setNullRepresentation("");
+        name.setMaxLength(65);
+        name.setRequired(true);
+        name.setRequiredError("Gimme a name!");
 
         description.setWidth("40em");
         description.setHeight("10em");
         description.setMaxLength(750);
         description.setNullRepresentation("");
+        description.setRequired(true);
+        description.setRequiredError("Gimme a description!");
 
         price.setWidth("10em");
         price.setNullRepresentation("0.0");
+        price.setRequired(true);
+        price.setRequiredError("I'm not free!");
+        price.addValidator(new FloatRangeValidator("Your price is not right", 0.00f, 1000000.00f));
+
 
         amountOfStock.setWidth("10em");
         amountOfStock.setNullRepresentation("0");
+        amountOfStock.setRequired(true);
+        amountOfStock.setRequiredError("I need some!");
+        amountOfStock.addValidator(new IntegerRangeValidator("Gimme reasonable quantity", 0, Integer.MAX_VALUE));
 
         createButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         createButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -69,7 +84,7 @@ public class CreateItemForm extends FormLayout {
             beanFieldGroup.commit();
             createItemFormListeners.stream().forEach(listener -> listener.createItemClicked(item));
         } catch (FieldGroup.CommitException e) {
-            e.printStackTrace();
+            createItemFormListeners.forEach(listener -> listener.commitExceptionThrown(e));
         }
     }
 
@@ -83,5 +98,7 @@ public class CreateItemForm extends FormLayout {
         void createItemClicked(Item item);
 
         void cancelClicked();
+
+        void commitExceptionThrown(FieldGroup.CommitException e);
     }
 }

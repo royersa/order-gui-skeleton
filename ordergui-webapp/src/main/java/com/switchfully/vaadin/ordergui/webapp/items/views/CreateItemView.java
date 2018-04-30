@@ -3,6 +3,7 @@ package com.switchfully.vaadin.ordergui.webapp.items.views;
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
 import com.switchfully.vaadin.ordergui.webapp.OrderGUI;
 import com.switchfully.vaadin.ordergui.webapp.items.views.forms.CreateItemForm;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
@@ -49,6 +50,12 @@ public class CreateItemView extends CustomComponent implements CreateItemForm.Cr
     }
 
     @Override
+    public void commitExceptionThrown(FieldGroup.CommitException e) {
+        showNotificationForFail(e);
+
+    }
+
+    @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         createItemViewListeners.forEach(listener -> listener.createItemViewOpened());
 
@@ -62,6 +69,21 @@ public class CreateItemView extends CustomComponent implements CreateItemForm.Cr
          notification.show(Page.getCurrent());
 
     }
+
+
+
+    public void showNotificationForFail(FieldGroup.CommitException exception){
+        Notification notification = new Notification("Validation Error",
+                "Cannot save this item. "
+                        +((exception.getCause()) != null && exception.getCause().getMessage() != null?
+                        exception.getCause().getMessage() : ""), Notification.Type.WARNING_MESSAGE, true);
+        notification.setDelayMsec(3000);
+
+        notification.show(Page.getCurrent());
+
+    }
+
+
 
 
     public interface CreateItemViewListener {

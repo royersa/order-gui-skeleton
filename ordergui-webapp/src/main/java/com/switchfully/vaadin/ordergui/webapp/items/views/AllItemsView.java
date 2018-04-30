@@ -6,6 +6,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.GeneratedPropertyContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -32,14 +33,9 @@ public class AllItemsView extends CustomComponent implements View {
 
         CssLayout filtering = makeFiltering();
 
-        grid.addSelectionListener(event -> {
-            if (event.getSelected().isEmpty()) {
-                listeners.forEach(l -> l.itemSelected(null));
-            } else {
-                listeners.forEach(l -> l.itemSelected((Item) event.getSelected().iterator().next()));
-            }
-        });
         grid.setSizeFull();
+
+
 
         newItem.addClickListener(e -> listeners.stream().forEach(listener -> listener.newItemClicked()));
 
@@ -79,9 +75,17 @@ public class AllItemsView extends CustomComponent implements View {
 
         grid.setColumns("name", "description", "price", "amountOfStock", "");
         grid.getColumn("").setRenderer(new ButtonRenderer(e -> listeners.forEach(listener -> listener.editClicked((Item)e.getItemId()))));
-
         grid.setContainerDataSource(editContainer);
+        resizeGrid(editContainer);
+    }
 
+    private void resizeGrid(GeneratedPropertyContainer editContainer) {
+        if (editContainer.getItemIds().size() > 0){
+            grid.setHeightMode(HeightMode.ROW);
+            grid.setHeightByRows(editContainer.size());
+        } else{
+            grid.setHeightMode(HeightMode.UNDEFINED);
+        }
     }
 
     public void addListener(AllItemsViewListener listener) {

@@ -3,6 +3,8 @@ package com.switchfully.vaadin.ordergui.webapp.items.views.forms;
 import com.switchfully.vaadin.ordergui.interfaces.items.Item;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.validator.FloatRangeValidator;
+import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -25,17 +27,28 @@ public class UpdateItemForm extends FormLayout {
     public UpdateItemForm() {
         name.setWidth("40em");
         name.setNullRepresentation("");
+        name.setMaxLength(65);
+        name.setRequired(true);
+        name.setRequiredError("Gimme a name!");
 
         description.setWidth("40em");
         description.setHeight("10em");
         description.setMaxLength(750);
         description.setNullRepresentation("");
+        description.setRequired(true);
+        description.setRequiredError("Gimme a description!");
 
         price.setWidth("10em");
         price.setNullRepresentation("0.0");
+        price.setRequired(true);
+        price.setRequiredError("I'm not free!");
+        price.addValidator(new FloatRangeValidator("Your price is not right", 0.00f, 1000000.00f));
 
         amountOfStock.setWidth("10em");
         amountOfStock.setNullRepresentation("0");
+        amountOfStock.setRequired(true);
+        amountOfStock.setRequiredError("I need some!");
+        amountOfStock.addValidator(new IntegerRangeValidator("Gimme reasonable quantity", 0, Integer.MAX_VALUE));
 
         updateButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
         updateButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -67,7 +80,7 @@ public class UpdateItemForm extends FormLayout {
             beanFieldGroup.commit();
             updateItemFormListeners.stream().forEach(listener -> listener.updateItemClicked(item));
         } catch (FieldGroup.CommitException e) {
-            e.printStackTrace();
+            updateItemFormListeners.forEach(listener -> listener.commitExceptionThrown(e));
         }
     }
 
@@ -81,5 +94,7 @@ public class UpdateItemForm extends FormLayout {
         void updateItemClicked(Item item);
 
         void cancelClicked();
+
+        void commitExceptionThrown (FieldGroup.CommitException e);
     }
 }
