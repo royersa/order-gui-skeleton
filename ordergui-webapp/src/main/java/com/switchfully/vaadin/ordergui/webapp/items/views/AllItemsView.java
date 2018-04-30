@@ -101,9 +101,11 @@ public class AllItemsView extends CustomComponent implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        this.listeners.forEach(listener -> listener.pageOpened());
     }
 
     public interface AllItemsViewListener {
+        void pageOpened();
 
         void searchFilterChanged(String searchFilter);
 

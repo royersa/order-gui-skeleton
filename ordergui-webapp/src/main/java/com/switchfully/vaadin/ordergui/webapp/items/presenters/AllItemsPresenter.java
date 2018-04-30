@@ -20,6 +20,12 @@ public class AllItemsPresenter implements AllItemsModel.AllItemsModelListener, A
     }
 
     @Override
+    public void pageOpened() {
+        this.model.askForFilterReset("");
+        this.model.updateResultList();
+    }
+
+    @Override
     public void resetFilterRequested(String searchFilter) {
         this.view.resetFilter(searchFilter);
     }
@@ -47,8 +53,6 @@ public class AllItemsPresenter implements AllItemsModel.AllItemsModelListener, A
     @Override
     public void newItemClicked() {
         this.view.getUI().getNavigator().navigateTo(OrderGUI.VIEW_CREATE_ITEM);
-        this.model.setNewActiveItem();
-
     }
 
     @Override

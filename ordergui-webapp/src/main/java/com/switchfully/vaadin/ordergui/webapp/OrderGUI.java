@@ -42,7 +42,7 @@ public class OrderGUI extends UI {
         navigator = new Navigator(this, this);
         createItemPresenter = new CreateItemPresenter(new CreateItemModel(itemResource), new CreateItemView());
         updateItemPresenter = new UpdateItemPresenter(new UpdateItemModel(itemResource), new UpdateItemView());
-        allItemsPresenter = new AllItemsPresenter(new AllItemsModel(itemResource, createItemPresenter.getModel(), updateItemPresenter.getModel()), new AllItemsView());
+        allItemsPresenter = new AllItemsPresenter(new AllItemsModel(itemResource), new AllItemsView());
         allItemsPresenter.getModel().updateResultList();
 
 

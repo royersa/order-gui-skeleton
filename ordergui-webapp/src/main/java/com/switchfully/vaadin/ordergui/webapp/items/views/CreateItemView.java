@@ -50,6 +50,7 @@ public class CreateItemView extends CustomComponent implements CreateItemForm.Cr
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+        createItemViewListeners.forEach(listener -> listener.createItemViewOpened());
 
     }
 
@@ -64,6 +65,7 @@ public class CreateItemView extends CustomComponent implements CreateItemForm.Cr
 
 
     public interface CreateItemViewListener {
+        void createItemViewOpened();
         void itemCreated (Item item);
         void itemFormCanceled();
     }

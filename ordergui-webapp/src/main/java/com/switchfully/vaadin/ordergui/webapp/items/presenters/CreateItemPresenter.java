@@ -43,6 +43,11 @@ public class CreateItemPresenter implements CreateItemView.CreateItemViewListene
         return view;
     }
 
+    @Override
+    public void createItemViewOpened() {
+        this.model.setNewActiveItem();
+    }
+
     public CreateItemModel getModel() {
         return model;
     }
